@@ -16,10 +16,22 @@ def binary_classification_metrics(y_pred, y_true):
     # https://en.wikipedia.org/wiki/Precision_and_recall
     # https://en.wikipedia.org/wiki/F1_score
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    tp_n = np.sum(np.logical_and(y_pred == 1, y_true == 1))
+    tn_n = np.sum(np.logical_and(y_pred == 0, y_true == 0))
+    fp_n = np.sum(np.logical_and(y_pred == 1, y_true == 0))
+    fn_n = np.sum(np.logical_and(y_pred == 0, y_true == 1))
+
+    precision = tp_n / (tp_n + fp_n)
+    recall = tp_n / (tp_n + fn_n)
+
+    try:
+        f1 = 2 * precision * recall / (precision + recall)
+    except ZeroDivisionError:
+        f1 = 0
+
+    accuracy = (tp_n + tn_n) / (tp_n + tn_n + fn_n + fp_n)
+
+    print(f'Accuracy = {accuracy}\nprecision = {precision}\nrecall = {recall}\nf1 = {f1}')
 
 
 def multiclass_accuracy(y_pred, y_true):
@@ -32,10 +44,10 @@ def multiclass_accuracy(y_pred, y_true):
     accuracy - ratio of accurate predictions to total samples
     """
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    tp = (y_true == y_pred).sum()
+    accuracy = tp / len(y_true)
+
+    return accuracy
 
 
 def r_squared(y_pred, y_true):
@@ -48,10 +60,9 @@ def r_squared(y_pred, y_true):
     r2 - r-squared value
     """
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    r2 = np.corrcoef(y_true, y_pred)[0, 1] ** 2
+
+    return r2
 
 
 def mse(y_pred, y_true):
@@ -64,10 +75,9 @@ def mse(y_pred, y_true):
     mse - mean squared error
     """
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
+    mse = ((y_pred - y_true) ** 2).sum() / len(y_true)
+
+    return mse
 
 
 def mae(y_pred, y_true):
@@ -80,8 +90,6 @@ def mae(y_pred, y_true):
     mae - mean absolut error
     """
 
-    """
-    YOUR CODE IS HERE
-    """
-    pass
-    
+    mae = (y_pred - y_true).abs().sum() / len(y_true)
+
+    return mae
